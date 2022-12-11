@@ -1,16 +1,10 @@
 {
   "users": [
     {
-      "email": "hex003@gmail.com",
-      "password": "$2a$10$X44T0VqNk8dyYlc1baKop.cRwv097wHNZUW3BG8mP5plS./kpqMmC",
-      "name": "六角003",
-      "id": 1
-    },
-    {
       "email": "admin@gmail.com",
-      "password": "$2a$10$X5bGtj9B2YmW87Umx/Ags.7lYsgXD60Ewz04pSyAfSp6OoIj37gd.",
+      "password": "$2a$10$8WS/.HZADaeszShKVWQv8uiLGxTaNvhrU.2Tpla7CFjNTCyjaVpUi",
       "name": "admin",
-      "id": 2
+      "id": 1
     }
   ],
   "attractions": [
