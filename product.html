@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.43.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <title>景點介紹</title>
+</head>
+<body>
+  <header>
+    <div class="navbar bg-base-100">
+      <div class="flex-1">
+        <h1>
+          <a href="index.html" class="btn btn-ghost normal-case text-xl">台灣景點</a>
+        </h1>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <li>
+            <a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>
+          </li>
+          <li>
+            <label for="signin-modal" class="btn btn-outline border-0">登入</label>
+            <!-- <p class="hidden">姓名</p> -->
+          </li>
+          <li class="ml-3">
+            <label for="signup-modal" class="btn btn-accent">免費註冊</label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <main class="container pt-10 mx-auto px-12">
+    <div class="js-product"></div>
+  </main>
+  <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    const apiURL = "http://localhost:3000/";
+    const productDOM = document.querySelector(".js-product");
+    const getData = async () => {
+      const url = new URL(location.href);
+      const productId = url.searchParams.get("id");
+      const { data } = await axios.get(apiURL + "attractions/" + productId);
+      render(data);
+    }
+    const render = (data) => {
+      let string = `
+        <div class="hero bg-base-100">
+          <div class="hero-content flex-col lg:flex-row">
+            <img src="${data.image}" class="max-w-sm rounded-lg shadow-2xl" />
+            <div>
+              <h1 class="text-3xl mb-3">${data.name}</h1>
+              <p class="py-6">${data.description}</p>
+              <button class="btn btn-accent">加入收藏</button>
+            </div>
+          </div>
+        </div>
+      `;
+      productDOM.innerHTML = string;
+    };
+    const init = () => {
+      getData();
+    };
+    init();
+
+  </script>
+</body>
+</html>

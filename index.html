@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.43.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <title>台灣景點</title>
+</head>
+<body>
+  <header>
+    <div class="navbar bg-base-100">
+      <div class="flex-1">
+        <h1>
+          <a href="index.html" class="btn btn-ghost normal-case text-xl">台灣景點</a>
+        </h1>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <li>
+            <a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>
+          </li>
+          <li>
+            <label for="signin-modal" class="btn btn-outline border-0">登入</label>
+            <!-- <p class="hidden">姓名</p> -->
+          </li>
+          <li class="ml-3">
+            <label for="signup-modal" class="btn btn-accent">免費註冊</label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+  <main class="container mx-auto px-12">
+    <h2 class="text-3xl mb-3">景點列表</h2>
+    <!-- list -->
+    <ul class="js-list grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-20">
+      <li>
+        <div class="card w-96 bg-base-100 shadow-xl">
+          <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+          <div class="card-body">
+            <h2 class="card-title">Shoes!</h2>
+            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div>
+      <input type="checkbox" id="signup-modal" class="modal-toggle" />
+      <div class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg mb-3">註冊會員</h3>
+          <form action="" class="js-signupForm">
+            <div class="form-control mb-3">
+              <label class="input-group">
+                <span class="w-1/6">姓名</span>
+                <input type="text" placeholder="您的姓名" class="input input-bordered w-full" />
+              </label>
+            </div>
+            <div class="form-control mb-3">
+              <label class="input-group">
+                <span class="w-1/6">信箱</span>
+                <input type="email" placeholder="info@site.com" class="input input-bordered w-full" />
+              </label>
+            </div>
+            <div class="form-control mb-3">
+              <label class="input-group">
+                <span class="w-1/6">密碼</span>
+                <input type="password" placeholder="" class="input input-bordered w-full" />
+              </label>
+            </div>
+          </form>
+          <div class="modal-action">
+            <label for="signup-modal" class="btn btn-outline text-gray-400">取消</label>
+            <label for="signup-modal" class="btn btn-accent">註冊</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <input type="checkbox" id="signin-modal" class="modal-toggle" />
+      <div class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg mb-3">登入會員</h3>
+          <form action="" class="js-signinForm">
+            <div class="form-control mb-3">
+              <label class="input-group">
+                <span class="w-1/6">信箱</span>
+                <input type="email" placeholder="" class="input input-bordered w-full" />
+              </label>
+            </div>
+            <div class="form-control mb-3">
+              <label class="input-group">
+                <span class="w-1/6">密碼</span>
+                <input type="password" placeholder="" class="input input-bordered w-full" />
+              </label>
+            </div>
+          </form>
+          <div class="modal-action">
+            <label for="signin-modal" class="btn btn-outline text-gray-400">取消</label>
+            <label for="signin-modal" class="btn btn-accent">登入</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    const apiURL = "http://localhost:3000/";
+    const ulList = document.querySelector(".js-list");
+    const getData = async () => {
+      const { data } = await axios.get(apiURL + "attractions");
+      render(data);
+    }
+    const render = (data) => {
+      let string = "";
+      data.forEach(item => {
+        string += `
+        <li>
+          <div class="card w-96 bg-base-100 shadow-xl">
+            <figure><img src="${item.image}" alt="${item.name}" class="h-80 object-cover" /></figure>
+            <div class="card-body">
+              <h2 class="card-title">${item.name}</h2>
+              <p class="truncate">${item.description}</p>
+              <div class="card-actions justify-end">
+                <a href="./product.html?id=${item.id}" class="btn btn-primary">繼續閱讀</a>
+              </div>
+            </div>
+          </div>
+        </li>`
+      });
+      ulList.innerHTML = string;
+    };
+    const init = () => {
+      getData();
+    };
+    init();
+
+  </script>
+</body>
+</html>
