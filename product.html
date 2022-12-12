@@ -100,8 +100,8 @@
     const signinBtn = document.querySelector(".js-signinBtn");
     const signupForm = document.querySelector(".js-signupForm");
     const signinForm = document.querySelector(".js-signinForm");
-    const navbarSignin = document.querySelector(".js-navbar-signin");
-    const navbarSignup = document.querySelector(".js-navbar-signup");
+    const menu = document.querySelector(".js-menu");
+
     let tempProductId = 0;
     const getData = async () => {
       const url = new URL(location.href);
@@ -162,18 +162,35 @@
     const signStatus = () => {
       const userData = JSON.parse(localStorage.getItem("attraction")) || {};
       if (userData?.accessToken) {
-        navbarSignin.innerHTML = `<p>歡迎 ${userData.user.name} ^_^</p>`;
-        navbarSignup.innerHTML = `<input type="button" value="登出" class="js-signout btn btn-outline border-0"/>`;
+        menu.innerHTML = `
+          <li>
+            ${userData.user.email === "admin@gmail.com" ? '<a href="./dashboard.html" class="btn btn-outline border-0">前往後台</a>' : '<a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>'}
+
+          </li>
+          <li>
+            <p>歡迎 ${userData.user.name} ^_^</p>
+          </li>
+          <li>
+           <input type="button" value="登出" class="js-signout btn btn-outline border-0"/>
+          </li>
+        `;
         const signout = document.querySelector(".js-signout");
         signout.addEventListener("click", ( ) => {
           localStorage.removeItem("attraction");
-          location.href = `./product.html?id=${tempProductId}`;
-        })
+          location.href = "./index.html";
+        });
       } else {
-        navbarSignin.innerHTML = `<label for="signin-modal" class="btn btn-outline border-0">登入</label>`
-        navbarSignup.innerHTML = `<label for="signup-modal" class="btn btn-accent">免費註冊</label>`
+        menu.innerHTML = `
+          <li class="mx-3">
+           <label for="signin-modal" class="btn btn-outline border-0">登入</label>
+          </li>
+          <li>
+           <label for="signup-modal" class="btn btn-accent">免費註冊</label>
+          </li>
+        `;
       }
-    }
+    };
+
     const init = () => {
       getData();
       signupBtn.addEventListener("click", signup);

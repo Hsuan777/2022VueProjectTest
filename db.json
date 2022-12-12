@@ -5,6 +5,12 @@
       "password": "$2a$10$8WS/.HZADaeszShKVWQv8uiLGxTaNvhrU.2Tpla7CFjNTCyjaVpUi",
       "name": "admin",
       "id": 1
+    },
+    {
+      "email": "vics@gmail.com",
+      "password": "$2a$10$OcRhBNcHr4eMr5MNFGZ0NO05HJ7A5HmqQ2QDM4BEQW6jNBx6IGxd2",
+      "name": "vic",
+      "id": 2
     }
   ],
   "attractions": [

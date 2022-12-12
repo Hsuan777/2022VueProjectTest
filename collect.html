@@ -18,13 +18,7 @@
         </h1>
       </div>
       <div class="flex-none">
-        <ul class="menu menu-horizontal px-1">
-          <li>
-            <a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>
-          </li>
-          <li class="js-navbar-signin"></li>
-          <li class="js-navbar-signup ml-3"></li>
-        </ul>
+        <ul class="js-menu menu menu-horizontal px-1"></ul>
       </div>
     </div>
   </header>
@@ -49,9 +43,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     const apiURL = "http://localhost:3000/";
+    const menu = document.querySelector(".js-menu");
     const ulList = document.querySelector(".js-list");
-    const getData = async () => {
 
+    const getData = async () => {
       const { data } = await axios.get(apiURL + "attractions");
       render(data);
     }
@@ -79,18 +74,35 @@
     const signStatus = () => {
       const userData = JSON.parse(localStorage.getItem("attraction")) || {};
       if (userData?.accessToken) {
-        navbarSignin.innerHTML = `<p>歡迎 ${userData.user.name} ^_^</p>`;
-        navbarSignup.innerHTML = `<input type="button" value="登出" class="js-signout btn btn-outline border-0"/>`;
+        menu.innerHTML = `
+          <li>
+            ${userData.user.email === "admin@gmail.com" ? '<a href="./dashboard.html" class="btn btn-outline border-0">前往後台</a>' : '<a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>'}
+
+          </li>
+          <li>
+            <p>歡迎 ${userData.user.name} ^_^</p>
+          </li>
+          <li>
+           <input type="button" value="登出" class="js-signout btn btn-outline border-0"/>
+          </li>
+        `;
         const signout = document.querySelector(".js-signout");
         signout.addEventListener("click", ( ) => {
           localStorage.removeItem("attraction");
           location.href = "./index.html";
         })
       } else {
-        navbarSignin.innerHTML = `<label for="signin-modal" class="btn btn-outline border-0">登入</label>`
-        navbarSignup.innerHTML = `<label for="signup-modal" class="btn btn-accent">免費註冊</label>`
+        menu.innerHTML = `
+          <li class="mx-3">
+           <label for="signin-modal" class="btn btn-outline border-0">登入</label>
+          </li>
+          <li>
+           <label for="signup-modal" class="btn btn-accent">免費註冊</label>
+          </li>
+        `;
       }
-    }
+    };
+
     const init = () => {
       getData();
     };
