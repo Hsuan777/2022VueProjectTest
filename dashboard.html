@@ -119,25 +119,43 @@
     };
 
     const addData = async () => {
+      const editForm = document.querySelector(".js-editForm");
+      const attraction = {
+        name: editForm[0].value,
+        image: editForm[1].value,
+        description: editForm[2].value,
+        userId: 1
+      }
       try {
-        await axios.post(apiURL + `600/attractions`, authToken);
+        await axios.post(apiURL + `600/attractions`, attraction, authToken);
+        getData();
       } catch (error) {
-
+        console.log(error);
+        alert("錯了喔");
       }
     }
-    const deleteData = async (id) => {
+    const deleteData = async (e) => {
       try {
-        await axios.delete(apiURL + `600/attractions/${id}`, authToken);
+        await axios.delete(apiURL + `600/attractions/${e.target.dataset.id}`, authToken);
+        getData();
       } catch (error) {
-
+        alert("錯了喔");
       }
     };
 
-    const editData = async (id) => {
+    const editData = async (e) => {
+      const editForm = document.querySelector(".js-editForm");
+      const attraction = {
+        name: editForm[0].value,
+        image: editForm[1].value,
+        description: editForm[2].value,
+      }
       try {
-        await axios.patch(apiURL + `600/attractions/${id}`, authToken);
+        await axios.patch(apiURL + `600/attractions/${e.target.dataset.id}`, attraction, authToken);
+        getData();
       } catch (error) {
-
+        console.log(error);
+        alert("錯了喔");
       }
     }
 
@@ -198,8 +216,10 @@
         </form>
         <div class="modal-action">
           <label for="edit-modal" class="btn btn-outline text-gray-400">取消</label>
-          <label for="edit-modal" class="js-editSubmit btn btn-accent">修改</label>
+          <label for="edit-modal" class="js-editSubmit btn btn-accent" data-id="${filterData?.id ? filterData.id : ""}">${filterData?.id ? "修改" : "新增" }</label>
         </div>`;
+        const editSubmit = document.querySelector(".js-editSubmit");
+        editSubmit.addEventListener("click", filterData?.id ? editData : addData);
     }
 
     const init = () => {

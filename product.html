@@ -18,7 +18,7 @@
         </h1>
       </div>
       <div class="flex-none">
-        <ul class="menu menu-horizontal px-1">
+        <ul class="js-menu menu menu-horizontal px-1">
           <li>
             <a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>
           </li>
@@ -165,7 +165,6 @@
         menu.innerHTML = `
           <li>
             ${userData.user.email === "admin@gmail.com" ? '<a href="./dashboard.html" class="btn btn-outline border-0">前往後台</a>' : '<a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>'}
-
           </li>
           <li>
             <p>歡迎 ${userData.user.name} ^_^</p>
