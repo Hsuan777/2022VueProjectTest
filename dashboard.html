@@ -82,13 +82,13 @@
     const dataArray = [];
     const authToken = {
       headers: {
-          Authorization: ""
-        }
+        Authorization: ""
+      }
     };
     const signStatus = async () => {
       const userData = JSON.parse(localStorage.getItem("attraction")) || {};
       if (userData?.accessToken) {
-         authToken.headers.Authorization = 'Bearer ' + userData.accessToken
+        authToken.headers.Authorization = 'Bearer ' + userData.accessToken;
         try {
           await axios.get(apiURL + "600/users/1", authToken);
           menu.innerHTML = `
