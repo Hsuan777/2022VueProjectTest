@@ -102,6 +102,7 @@
     const signinForm = document.querySelector(".js-signinForm");
     const menu = document.querySelector(".js-menu");
 
+    let userData = JSON.parse(localStorage.getItem("attraction")) || {};
     const authToken = {
       headers: {
           Authorization: ""
@@ -116,37 +117,44 @@
       const { data } = await axios.get(apiURL + "attractions/" + productId);
       render(data);
     }
-    const isCollect = (e) => {
-      const userData = JSON.parse(localStorage.getItem("attraction")) || {};
-      const authToken = {
-        headers: {
-          Authorization: "Bearer " + userData.accessToken
+    const patchCollect = async (e) => {
+      if (userData?.accessToken) {
+        const collect = {
+          attractionId: e.target.dataset.id * 1
+        };
+        const filterResult = userData.user.collects.filter(item => item.attractionId === e.target.dataset.id * 1);
+        console.log("has");
+        if (filterResult.length > 0) {
+          userData.user.collects.forEach((item, index) => {
+            if (item.attractionId === filterResult[0].attractionId) {
+              userData.user.collects.splice(index, 1)
+            }
+          })
+        } else {
+          userData.user.collects.push(collect);
         }
-      };
-      const collect = {};
-      if (userData?.user?.collects.length > 1) {
-        collect.collects = [
-          {
-            id: e.target.dataset.id
-          },
-          ...userData.user.collects
-        ]
+        await axios.patch(apiURL + `600/users/${userData.user.id}`, {collects: userData.user.collects}, authToken);
+        localStorage.setItem("attraction", JSON.stringify(userData));
       } else {
-        collect.collects = [
-          {
-            id: e.target.dataset.id
-          },
-        ]
+        alert("請先登入")
       }
-      try {
-        const result = axios.patch(apiURL + `600/users/${userData.user.id}`, collect, authToken);
-        console.log(result);
-      } catch (error) {
-        console.log("錯了喔");
+    };
+
+    const isCollect = (id) => {
+      if (userData?.accessToken) {
+        const result = userData.user.collects.filter(item => item.attractionId === id);
+        if (result.length > 0) {
+          return "已收藏";
+        } else {
+          return "加入收藏";
+        }
+      } else {
+        return "加入收藏";
       }
     };
 
     const render = (data) => {
+      const userData = JSON.parse(localStorage.getItem("attraction")) || {};
       let string = `
         <div class="hero bg-base-100">
           <div class="hero-content flex-col lg:flex-row">
@@ -154,14 +162,14 @@
             <div>
               <h1 class="text-3xl mb-3">${data.name}</h1>
               <p class="py-6">${data.description}</p>
-              <button class="js-addCollect btn btn-accent" data-id="${data.id}">加入收藏</button>
+              <button class="js-addCollect btn ${isCollect(data.id) === '已收藏' ? 'btn-outline' : 'btn-accent'}" data-id="${data.id}">${isCollect(data.id)}</button>
             </div>
           </div>
         </div>
       `;
       productDOM.innerHTML = string;
       const addCollect = document.querySelector(".js-addCollect");
-      addCollect.addEventListener("click", isCollect)
+      addCollect.addEventListener("click", patchCollect)
     };
 
     const signup = async () => {
@@ -197,9 +205,10 @@
       }
     };
 
-    const signStatus = () => {
-      const userData = JSON.parse(localStorage.getItem("attraction")) || {};
-      if (userData?.accessToken) {
+    const signStatus = async () => {
+      authToken.headers.Authorization = "Bearer " + userData.accessToken;;
+      try {
+        await axios.get(apiURL + `600/users/${userData.user.id}`, authToken);
         menu.innerHTML = `
           <li>
             ${userData.user.email === "admin@gmail.com" ? '<a href="./dashboard.html" class="btn btn-outline border-0">前往後台</a>' : '<a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>'}
@@ -212,11 +221,11 @@
           </li>
         `;
         const signout = document.querySelector(".js-signout");
-        signout.addEventListener("click", ( ) => {
+        signout.addEventListener("click", () => {
           localStorage.removeItem("attraction");
           location.href = "./index.html";
         });
-      } else {
+      } catch (error) {
         menu.innerHTML = `
           <li class="mx-3">
            <label for="signin-modal" class="btn btn-outline border-0">登入</label>

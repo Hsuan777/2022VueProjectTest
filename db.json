@@ -13,7 +13,7 @@
       "name": "vic",
       "collects": [
         {
-          "id": "2"
+          "attractionId": 2
         }
       ],
       "id": 2
@@ -41,5 +41,6 @@
       "userId": 1,
       "id": 3
     }
-  ]
+  ],
+  "collects": []
 }
