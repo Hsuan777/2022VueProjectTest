@@ -46,8 +46,15 @@
     const menu = document.querySelector(".js-menu");
     const ulList = document.querySelector(".js-list");
 
+    let userData = JSON.parse(localStorage.getItem("attraction")) || {};
+    const authToken = {
+      headers: {
+          Authorization: ""
+        }
+    };
+
     const getData = async () => {
-      const { data } = await axios.get(apiURL + "attractions");
+      const data = userData.user.collects;
       render(data);
     }
     const render = (data) => {
@@ -71,14 +78,11 @@
       ulList.innerHTML = string;
     };
 
-    const signStatus = () => {
-      const userData = JSON.parse(localStorage.getItem("attraction")) || {};
-      if (userData?.accessToken) {
+    const signStatus = async () => {
+      authToken.headers.Authorization = "Bearer " + userData.accessToken;;
+      try {
+        await axios.get(apiURL + `600/users/${userData.user.id}`, authToken);
         menu.innerHTML = `
-          <li>
-            ${userData.user.email === "admin@gmail.com" ? '<a href="./dashboard.html" class="btn btn-outline border-0">前往後台</a>' : '<a href="./collect.html" class="btn btn-outline border-0">我的收藏</a>'}
-
-          </li>
           <li>
             <p>歡迎 ${userData.user.name} ^_^</p>
           </li>
@@ -87,11 +91,12 @@
           </li>
         `;
         const signout = document.querySelector(".js-signout");
-        signout.addEventListener("click", ( ) => {
+        signout.addEventListener("click", () => {
           localStorage.removeItem("attraction");
           location.href = "./index.html";
-        })
-      } else {
+        });
+        getData();
+      } catch (error) {
         menu.innerHTML = `
           <li class="mx-3">
            <label for="signin-modal" class="btn btn-outline border-0">登入</label>
@@ -104,7 +109,7 @@
     };
 
     const init = () => {
-      getData();
+      signStatus();
     };
     init();
 
