@@ -101,8 +101,9 @@
   </main>
   <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    const apiURL = "http://localhost:3000/";
+  <script type="module">
+    import config from "./config.js";
+    const apiURL = config.apiURL;
     const ulList = document.querySelector(".js-list");
     const signupBtn = document.querySelector(".js-signupBtn");
     const signinBtn = document.querySelector(".js-signinBtn");
