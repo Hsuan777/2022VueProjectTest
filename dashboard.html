@@ -129,10 +129,11 @@
       }
       try {
         await axios.post(apiURL + `600/attractions`, attraction, authToken);
+        clearForm();
         getData();
       } catch (error) {
         console.log(error);
-        alert("錯了喔");
+        alert("暫時無法加入資料");
       }
     }
     const deleteData = async (e) => {
@@ -140,7 +141,7 @@
         await axios.delete(apiURL + `600/attractions/${e.target.dataset.id}`, authToken);
         getData();
       } catch (error) {
-        alert("錯了喔");
+        alert("暫時無法刪除資料");
       }
     };
 
@@ -153,10 +154,10 @@
       }
       try {
         await axios.patch(apiURL + `600/attractions/${e.target.dataset.id}`, attraction, authToken);
+        clearForm();
         getData();
       } catch (error) {
-        console.log(error);
-        alert("錯了喔");
+        alert("暫時無法修改資料");
       }
     }
 
@@ -222,6 +223,13 @@
         const editSubmit = document.querySelector(".js-editSubmit");
         editSubmit.addEventListener("click", filterData?.id ? editData : addData);
     }
+
+    const clearForm = () => {
+      const editForm = document.querySelector(".js-editForm");
+      editForm[0].value = "";
+      editForm[1].value = "";
+      editForm[2].value = "";
+    };
 
     const init = () => {
       signStatus();

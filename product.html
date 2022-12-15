@@ -136,6 +136,7 @@
         }
         await axios.patch(apiURL + `600/users/${userData.user.id}`, {collects: userData.user.collects}, authToken);
         localStorage.setItem("attraction", JSON.stringify(userData));
+        getData();
       } else {
         alert("請先登入")
       }
@@ -184,7 +185,7 @@
         signupForm[0].value = "";
         signupForm[1].value = "";
         signupForm[2].value = "";
-        console.log("請再次登入");
+        alert("請再次登入");
       } catch (error) {
         console.log("失敗");
       }
