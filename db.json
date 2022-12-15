@@ -11,11 +11,7 @@
       "email": "vics@gmail.com",
       "password": "$2a$10$OcRhBNcHr4eMr5MNFGZ0NO05HJ7A5HmqQ2QDM4BEQW6jNBx6IGxd2",
       "name": "vic",
-      "collects": [
-        {
-          "attractionId": 2
-        }
-      ],
+      "collects": [],
       "id": 2
     }
   ],

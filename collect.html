@@ -53,10 +53,31 @@
         }
     };
 
+    const patchCollect = async (e) => {
+      e.preventDefault();
+      userData.user.collects.forEach((item, index) => {
+        if (item.attractionId === e.target.dataset.id * 1) {
+          userData.user.collects.splice(index, 1)
+        }
+      })
+      await axios.patch(apiURL + `600/users/${userData.user.id}`, {collects: userData.user.collects}, authToken);
+      localStorage.setItem("attraction", JSON.stringify(userData));
+      getData();
+    };
+
     const getData = async () => {
-      const data = userData.user.collects;
-      render(data);
-    }
+      const collectsId = userData.user.collects;
+      const collects = [];
+      if (collectsId.length > 0) {
+        for (let x = 0; x < collectsId.length; x++) {
+          const { data } = await axios.get(apiURL + `attractions/${collectsId[x].attractionId}`);
+          collects.push(data);
+        }
+      }
+      render(collects);
+    };
+
+
     const render = (data) => {
       let string = "";
       data.forEach(item => {
@@ -68,7 +89,7 @@
               <h2 class="card-title">${item.name}</h2>
               <p class="truncate">${item.description}</p>
               <div class="card-actions justify-between">
-                <a class="btn btn-outline">取消收藏</a>
+                <a class="js-patchCollectBtn btn btn-outline" data-id="${item.id}">取消收藏</a>
                 <a href="./product.html?id=${item.id}" class="btn btn-primary">繼續閱讀</a>
               </div>
             </div>
@@ -76,6 +97,10 @@
         </li>`
       });
       ulList.innerHTML = string;
+      const patchCollectBtnAll = document.querySelectorAll(".js-patchCollectBtn");
+      patchCollectBtnAll.forEach(item => {
+        item.addEventListener("click", patchCollect)
+      })
     };
 
     const signStatus = async () => {
@@ -95,7 +120,6 @@
           localStorage.removeItem("attraction");
           location.href = "./index.html";
         });
-        getData();
       } catch (error) {
         menu.innerHTML = `
           <li class="mx-3">
@@ -110,6 +134,7 @@
 
     const init = () => {
       signStatus();
+      getData();
     };
     init();
 

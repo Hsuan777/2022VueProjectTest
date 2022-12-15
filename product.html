@@ -116,14 +116,14 @@
       tempProductId = url.searchParams.get("id");
       const { data } = await axios.get(apiURL + "attractions/" + productId);
       render(data);
-    }
+    };
+
     const patchCollect = async (e) => {
       if (userData?.accessToken) {
         const collect = {
           attractionId: e.target.dataset.id * 1
         };
         const filterResult = userData.user.collects.filter(item => item.attractionId === e.target.dataset.id * 1);
-        console.log("has");
         if (filterResult.length > 0) {
           userData.user.collects.forEach((item, index) => {
             if (item.attractionId === filterResult[0].attractionId) {
@@ -162,14 +162,14 @@
             <div>
               <h1 class="text-3xl mb-3">${data.name}</h1>
               <p class="py-6">${data.description}</p>
-              <button class="js-addCollect btn ${isCollect(data.id) === '已收藏' ? 'btn-outline' : 'btn-accent'}" data-id="${data.id}">${isCollect(data.id)}</button>
+              <button class="js-patchCollectBtn btn ${isCollect(data.id) === '已收藏' ? 'btn-outline' : 'btn-accent'}" data-id="${data.id}">${isCollect(data.id)}</button>
             </div>
           </div>
         </div>
       `;
       productDOM.innerHTML = string;
-      const addCollect = document.querySelector(".js-addCollect");
-      addCollect.addEventListener("click", patchCollect)
+      const patchCollectBtn = document.querySelector(".js-patchCollectBtn");
+      patchCollectBtn.addEventListener("click", patchCollect)
     };
 
     const signup = async () => {
