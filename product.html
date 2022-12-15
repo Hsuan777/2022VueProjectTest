@@ -179,7 +179,8 @@
         const signupData = {
           name: signupForm[0].value,
           email:signupForm[1].value,
-          password: signupForm[2].value
+          password: signupForm[2].value,
+          collects: []
         }
         await axios.post(apiURL + "signup", signupData);
         signupForm[0].value = "";
@@ -203,7 +204,7 @@
         localStorage.setItem("attraction", JSON.stringify(data));
         location.href = `./product.html?id=${tempProductId}`;
       } catch (error) {
-        console.log("失敗");
+        alert("登入失敗");
       }
     };
 

@@ -116,15 +116,17 @@
         const signupData = {
           name: signupForm[0].value,
           email:signupForm[1].value,
-          password: signupForm[2].value
+          password: signupForm[2].value,
+          collects: []
         }
         await axios.post(apiURL + "signup", signupData);
         signupForm[0].value = "";
         signupForm[1].value = "";
         signupForm[2].value = "";
-        console.log("請再次登入");
+        alert("請再次登入");
       } catch (error) {
-        console.log("失敗");
+        console.log(error);
+        alert("註冊失敗");
       }
     };
 
@@ -140,12 +142,11 @@
         localStorage.setItem("attraction", JSON.stringify(data));
         if (data.user.email === "admin@gmail.com") {
           location.href = "./dashboard.html";
-
         } else {
           location.href = "./index.html";
         }
       } catch (error) {
-        console.log("失敗");
+         alert("登入失敗");
       }
     };
 

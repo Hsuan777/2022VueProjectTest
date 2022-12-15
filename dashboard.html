@@ -114,6 +114,7 @@
     };
 
     const getData = async () => {
+      dataArray.length = 0;
       const { data } = await axios.get(apiURL + "attractions", authToken);
       dataArray.push(...data);
       render(data);
